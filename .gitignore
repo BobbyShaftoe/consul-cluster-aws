@@ -78,7 +78,7 @@ ansible/tests/*
 
 # Terraform
 */.terraform
-.terraform
+.terraform/*
 
 # Symlink to ansible/ansible.cfg
 ./ansible.cfg

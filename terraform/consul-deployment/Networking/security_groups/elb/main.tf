@@ -1,4 +1,4 @@
-# Create securety groups and open port
+# Create security groups and open port
 resource "aws_security_group" "consul_sec_elb" {
 
   name               = "elb"
