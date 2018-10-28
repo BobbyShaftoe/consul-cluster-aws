@@ -6,7 +6,7 @@ variable "consul_vpc_id" {
 }
 
 variable "tags" {
-  type = "list"
+  type = "map"
 }
 
 

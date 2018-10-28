@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import requests
+import sys
 import re
 
 url = 'https://api.ipify.org?format=json'
@@ -12,10 +13,6 @@ ip_match = re.match(r".*\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b.*", ip_response
 
 if ip_match:
     ip_address = ip_match.group(1)
-    print ip_address
-
-
-
-
-
-
+    print(ip_address)
+else:
+    sys.exit(0)

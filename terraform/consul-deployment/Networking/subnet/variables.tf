@@ -1,6 +1,9 @@
 
 variable "consul_vpc_id" {}
 variable "consul_vpc_cidr" {}
+variable "internet_gateway_id" {}
+
+variable "project" {}
 
 variable "aws_region" {}
 

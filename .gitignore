@@ -77,7 +77,7 @@ Temporary Items
 ansible/tests/*
 
 # Terraform
-*.terraform/modules
+*/.terraform
 .terraform
 
 # Symlink to ansible/ansible.cfg

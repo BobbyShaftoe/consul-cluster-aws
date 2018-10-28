@@ -1,22 +1,24 @@
-provider "aws" {
-  region = "${var.aws_region}"
-}
+
 
 module "subnet" {
-  source           = "Networking/subnet"
+  source              = "Networking/subnet"
 
-  consul_vpc_id    = "${data.aws_vpc.selected.id}"
-  consul_vpc_cidr  = "${var.vpc_cidr}"
-  subnet_cidr_list = "${var.subnet_cidr_list}"
-  az_list          = "${var.az_list}"
-  aws_region       = "${var.aws_region}"
+  project             = "${var.project}"
+  consul_vpc_id       = "${data.aws_vpc.selected.id}"
+  consul_vpc_cidr     = "${var.vpc_cidr}"
+  subnet_cidr_list    = "${var.subnet_cidr_list}"
+  az_list             = "${var.az_list}"
+  aws_region          = "${var.aws_region}"
+  internet_gateway_id = "${data.aws_internet_gateway.default.internet_gateway_id}"
 
-  tags             = "${local.tag_map}"
+  tags                = "${local.tag_map}"
 }
 
 
 module "security_groups" {
   source        = "Networking/security_groups"
+
+  project       = "${var.project}"
   consul_vpc_id = "${data.aws_vpc.selected.id}"
   vpc_cidr      = "${var.vpc_cidr}"
   aws_region    = "${var.aws_region}"
@@ -34,15 +36,15 @@ resource "aws_key_pair" "ssh_pub_key" {
 resource "aws_instance" "consul_instances" {
   count             = "${var.ec2_count}"
 
-  ami               = "${var.ami_id}"
+  ami               = "${data.aws_ami.centos.image_id}"
   key_name          = "${var.key_name}"
 
   security_groups   = ["${module.security_groups.consul_sec_gr_id}"]
-  subnet_id         = "${element(module.subnet.consul_subnet_ids, 1+(count.index+1)%3)}"
+  subnet_id         = "${element(module.subnet.consul_subnet_ids, count.index+1)}"
   instance_type     = "${var.instance_type}"
   user_data         = "${element(data.template_file.bootstrap.*.rendered, count.index)}"
 
-  tags = "${merge(map("Name", format("%s-%s-%s", element(var.instance_names, 1+(count.index)%2), count.index, element(var.az_list, 1+(count.index+1)%3))), local.tag_map)}"
+  tags = "${merge(map("Name", format("%s-%d-%s", element(var.instance_names, 1+count.index%2), 1+count.index/2, element(var.az_list, count.index/2))), local.tag_map)}"
 }
 
 
@@ -66,8 +68,9 @@ resource "aws_elb" "consul_cluster_elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "HTTP:80/"
+    target              = "TCP:22"
     interval            = 30
+
   }
 
   # The instance is registered automatically

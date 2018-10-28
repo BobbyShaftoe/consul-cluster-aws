@@ -1,3 +1,11 @@
+variable "array_2" {
+  type = "list"
+  default = [
+    1,
+    2
+  ]
+}
+
 variable "array_3" {
   type = "list"
   default = [
@@ -6,20 +14,21 @@ variable "array_3" {
     3
   ]
 }
-variable "array_6" {
-  type = "list"
-  default = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6
-  ]
-}
+
+//variable "array_6" {
+//  type = "list"
+//  default = [
+//    1,
+//    1,
+//    1,
+//    2,
+//    2,
+//    2
+//  ]
+//}
 
 
-
+variable "project" { default = "ansible-consul-deployment" }
 
 variable "aws_region" {
   description = "AWS region to operate"
@@ -45,11 +54,12 @@ variable "az_list" {
   description = "Avalability Zones"
   type = "list"
   default = [
-    "us-east-1a",
-    "us-east-1b",
-    "us-east-1c",]
+    "ap-southeast-1a",
+    "ap-southeast-1b",
+    "ap-southeast-1c",]
 }
 
+variable "internet_gateway" {default = "consul-nomad-ig"}
 
 variable "consul_buckets" {
   description = "bucket for access logs"
@@ -121,7 +131,7 @@ locals {
   account_id = "${data.aws_caller_identity.selected.account_id}"
 
   tag_map = {
-    Type        = "Consul Instance"
+    Description = "Autoscaling Consul Deployment"
     Environment = "${var.environment}"
     Role        = "${var.role}"
   }

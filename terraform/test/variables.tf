@@ -1,4 +1,13 @@
+variable "array_2" {
+  type = "list"
+  default = [
+    1,
+    2
+  ]
+}
 
+
+// need to turn array 3 into this array [1,1,2,2,3,3]
 variable "array_3" {
   type = "list"
   default = [
@@ -7,6 +16,30 @@ variable "array_3" {
     3
   ]
 }
+
+variable "array_3_2" {
+  type = "list"
+  default = [
+    [1,1],
+    [2,2],
+    [3,3]
+  ]
+}
+
+
+variable "instance_name_list" {
+  type = "list"
+  default = [
+    "Consul-Server",
+    "Consul-Client"
+  ]
+}
+
+
+
+// element(array_3, }
+
+
 variable "array_6" {
   type = "list"
   default = [
@@ -16,6 +49,18 @@ variable "array_6" {
     4,
     5,
     6
+  ]
+}
+
+variable "array_26" {
+  type = "list"
+  default = [
+    1,
+    1,
+    1,
+    2,
+    2,
+    2
   ]
 }
 
