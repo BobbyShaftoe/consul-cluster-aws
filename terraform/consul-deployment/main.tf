@@ -40,7 +40,8 @@ resource "aws_instance" "consul_instances" {
   key_name          = "${var.key_name}"
 
   security_groups   = ["${module.security_groups.consul_sec_gr_id}"]
-  subnet_id         = "${element(module.subnet.consul_subnet_ids, count.index+1)}"
+//  subnet_id         = "${element(module.subnet.consul_subnet_ids, count.index+1)}"
+  subnet_id         = "${element(module.subnet.consul_subnet_ids, count.index/2)}"
   instance_type     = "${var.instance_type}"
   user_data         = "${element(data.template_file.bootstrap.*.rendered, count.index)}"
 
